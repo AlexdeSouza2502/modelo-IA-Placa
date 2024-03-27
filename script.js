@@ -3,12 +3,10 @@ const URL = "./placas_model/";
 
 let model, webcam, labelContainer, maxPredictions;
 
-// Variável para rastrear se a webcam já foi inicializada
-let webcamInitialized = false;
-
 // Função de conveniência para configurar uma webcam
 async function init() {
-    if (!webcamInitialized) {
+    // Verifica se a webcam já foi inicializada
+    if (!webcam) {
         const modelURL = URL + "model.json";
         const metadataURL = URL + "metadata.json";
 
@@ -22,8 +20,6 @@ async function init() {
         window.requestAnimationFrame(loop);
 
         document.getElementById("webcam-container").appendChild(webcam.canvas);
-
-        webcamInitialized = true; // Marcar que a webcam foi inicializada
     }
 }
 
