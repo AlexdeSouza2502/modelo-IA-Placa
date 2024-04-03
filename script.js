@@ -34,27 +34,19 @@ init();  // Call init() once to start the process
 
 async function loop() {
     webcam.update();
-    await predict();
-    window.requestAnimationFrame(loop);
-}
 
-loop();  // Start the continuous loop
-
-async function predict() {
-    const prediction = await model.predict(webcam.canvas);
-    let maxProb = 0;
-    let maxName = "";
-
-    for (let i = 0; i < maxPredictions; i++) {
-        if (prediction[i].probability > maxProb) {
-            maxProb = prediction[i].probability;
-            maxName = prediction[i].className;
-        }
-    }
+    const prediction = await model.predict(webcam.canvas, {
+        flipHorizontal: true,
+        imageScale: 1.0,
+    });
 
     // Update predictions in labelContainer elements
     for (let i = 0; i < maxPredictions; i++) {
         const classPrediction = prediction[i].className + ": " + prediction[i].probability.toFixed(2);
         labelContainer.childNodes[i].innerHTML = classPrediction;
     }
+
+    window.requestAnimationFrame(loop);
 }
+
+loop();  // Start the continuous loop
