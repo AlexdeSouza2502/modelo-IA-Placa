@@ -22,6 +22,11 @@ async function init() {
         window.requestAnimationFrame(loop);
 
         document.getElementById("webcam-container").appendChild(webcam.canvas);
+        labelContainer = document.createElement("div");
+        document.getElementById("webcam-container").appendChild(labelContainer);
+        for (let i = 0; i < maxPredictions; i++) {
+            labelContainer.appendChild(document.createElement("div"));
+        }
 
         webcamInitialized = true; // Marcar que a webcam foi inicializada
     }
