@@ -1,4 +1,4 @@
-  // Link para o seu modelo fornecido pelo painel de exportação do Teachable Machine
+// Link para o seu modelo fornecido pelo painel de exportação do Teachable Machine
 const URL = "./placas_model/";
 
 let model, webcam, labelContainer, maxPredictions;
@@ -32,7 +32,10 @@ async function loop() {
 
 // Executar a imagem da webcam através do modelo de imagem
 async function predict() {
-    // prever pode receber uma imagem, vídeo ou elemento de canvas html
+    // Atualizar o quadro da webcam antes de fazer a previsão
+    webcam.update();
+    
+    // Prever pode receber uma imagem, vídeo ou elemento de canvas html
     const prediction = await model.predict(webcam.canvas);
     console.log(prediction);
     let maxProb = 0;
@@ -46,3 +49,6 @@ async function predict() {
     const classPrediction = maxName + ": " + (maxProb * 100).toFixed(2) + "%"; // Exibindo a probabilidade em percentual
     labelContainer.innerHTML = classPrediction;
 }
+
+// Chamar a função init uma vez que o documento foi completamente carregado
+document.addEventListener('DOMContentLoaded', init);
