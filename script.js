@@ -1,4 +1,4 @@
-// Link para o seu modelo fornecido pelo painel de exportação do Teachable Machine
+  // Link para o seu modelo fornecido pelo painel de exportação do Teachable Machine
 const URL = "./placas_model/";
 
 let model, webcam, labelContainer, maxPredictions;
@@ -12,16 +12,21 @@ async function init() {
     model = await tmImage.load(modelURL, metadataURL);
     maxPredictions = model.getTotalClasses();
 
-    // Função de conveniência para configurar uma webcam
-    const flip = true; // se deve ou não virar a webcam
-    webcam = new tmImage.Webcam(200, 200, flip); // largura, altura, virar
-    await webcam.setup(); // solicitar acesso à webcam
+
+    // Convenience function to setup a webcam
+    const flip = true; // whether to flip the webcam
+    webcam = new tmImage.Webcam(200, 200, flip); // width, height, flip
+    await webcam.setup(); // request access to the webcam
     await webcam.play();
     window.requestAnimationFrame(loop);
 
-    // anexar elementos ao DOM
+
+    // append elements to the DOM
     document.getElementById("webcam-container").appendChild(webcam.canvas);
     labelContainer = document.getElementById("label-container");
+    for (let i = 0; i < maxPredictions; i++) { // and class labels
+        labelContainer.appendChild(document.createElement("div"));
+    }
 }
 
 async function loop() {
@@ -32,10 +37,7 @@ async function loop() {
 
 // Executar a imagem da webcam através do modelo de imagem
 async function predict() {
-    // Atualizar o quadro da webcam antes de fazer a previsão
-    webcam.update();
-    
-    // Prever pode receber uma imagem, vídeo ou elemento de canvas html
+    // prever pode receber uma imagem, vídeo ou elemento de canvas html
     const prediction = await model.predict(webcam.canvas);
     console.log(prediction);
     let maxProb = 0;
@@ -49,6 +51,3 @@ async function predict() {
     const classPrediction = maxName + ": " + (maxProb * 100).toFixed(2) + "%"; // Exibindo a probabilidade em percentual
     labelContainer.innerHTML = classPrediction;
 }
-
-// Chamar a função init uma vez que o documento foi completamente carregado
-document.addEventListener('DOMContentLoaded', init);
