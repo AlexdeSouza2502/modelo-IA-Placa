@@ -8,7 +8,6 @@ async function init() {
     const modelURL = URL + "model.json";
     const metadataURL = URL + "metadata.json";
 
-    // Carregar o modelo e metadados
     model = await tmImage.load(modelURL, metadataURL);
     maxPredictions = model.getTotalClasses();
 
@@ -27,8 +26,6 @@ async function init() {
     for (let i = 0; i < maxPredictions; i++) { // and class labels
         labelContainer.appendChild(document.createElement("div"));
     }
-}
-
 async function loop() {
     webcam.update(); // atualizar o quadro da webcam
     await predict();
@@ -50,4 +47,5 @@ async function predict() {
     }
     const classPrediction = maxName + ": " + (maxProb * 100).toFixed(2) + "%"; // Exibindo a probabilidade em percentual
     labelContainer.innerHTML = classPrediction;
+   }
 }
