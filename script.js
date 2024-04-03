@@ -1,3 +1,4 @@
+// Link para o seu modelo fornecido pelo painel de exportação do Teachable Machine
 const URL = "./placas_model/";
 
 let model, webcam, labelContainer, maxPredictions;
@@ -11,31 +12,20 @@ async function init() {
         const modelURL = URL + "model.json";
         const metadataURL = URL + "metadata.json";
 
-        // Carregar o modelo
         model = await tmImage.load(modelURL, metadataURL);
         maxPredictions = model.getTotalClasses();
 
         const flip = true;
         webcam = new tmImage.Webcam(200, 200, flip);
+        await webcam.setup();
+        await webcam.play();
+        window.requestAnimationFrame(loop);
 
-        // Obter referência ao elemento onde as previsões serão exibidas
-        labelContainer = document.getElementById("label-container");
-
-        // Verificar se a webcam está disponível e inicializá-la
-        if (!webcam.initialized) {
-            await webcam.setup();
-            await webcam.play();
-        }
-
-        // Adicionar a tela da webcam ao contêiner especificado
         document.getElementById("webcam-container").appendChild(webcam.canvas);
 
         webcamInitialized = true; // Marcar que a webcam foi inicializada
     }
 }
-
-// Chamar a função init apenas uma vez
-init();
 
 async function loop() {
     webcam.update();
@@ -56,3 +46,6 @@ async function predict() {
     const classPrediction = maxName + ": " + (maxProb * 100).toFixed(2) + "%";
     labelContainer.innerHTML = classPrediction;
 }
+
+// Chamar a função init uma vez que o documento foi completamente carregado
+document.addEventListener('DOMContentLoaded', init);
