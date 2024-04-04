@@ -33,11 +33,11 @@ async function loop() {
   window.requestAnimationFrame(loop);
 }
 
-// Executar a imagem da webcam através do modelo de imagem
+  // Executar a imagem da webcam através do modelo de imagem
 async function predict() {
-    // prever pode receber uma imagem, vídeo ou elemento de canvas html
-    const prediction = await model.predict(webcam.canvas);
-    console.log(prediction);
+    // predict can take in an image, video or canvas html element
+  const prediction = await model.predict(webcam.canvas);
+  console.log(prediction);
     let maxProb = 0;
     let maxName = "";
     for (let i = 0; i < maxPredictions; i++) {
