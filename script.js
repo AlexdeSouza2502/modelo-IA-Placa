@@ -20,8 +20,7 @@ async function init() {
         webcam = new tmImage.Webcam(200, 200, flip); // width, height, flip
         await webcam.setup(); // request access to the webcam
         await webcam.play();
-        window.requestAnimationFrame(loop);
-
+        
         // append elements to the DOM
         document.getElementById("webcam-container").appendChild(webcam.canvas);
         labelContainer = document.getElementById("label-container");
@@ -57,4 +56,7 @@ async function predict() {
 }
 
 // Chamar a função init uma vez que o documento foi completamente carregado
-document.addEventListener('DOMContentLoaded', init);
+document.addEventListener('DOMContentLoaded', () => {
+    init();
+    loop(); // Iniciar o loop de atualização da webcam e previsão
+});
