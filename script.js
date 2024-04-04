@@ -52,3 +52,14 @@ async function predict() {
   // predict can take in an image, video or canvas html element
   const prediction = await model.predict(webcam.canvas);
   console.log(prediction);
+    let maxProb = 0;
+    let maxName = "";
+    for (let i = 0; i < maxPredictions; i++) {
+        if(prediction[i].probability > maxProb) {
+            maxProb = prediction[i].probability;
+            maxName = prediction[i].className;
+        }
+    }
+    const classPrediction = maxName + ": " + (maxProb * 100).toFixed(2) + "%"; // Exibindo a probabilidade em percentual
+    labelContainer.innerHTML = classPrediction;
+   }
