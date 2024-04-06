@@ -1,0 +1,84 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-image: url('via.gif'); /* Substitua 'caminho/para/sua/imagem.jpg' pelo caminho da sua imagem de fundo */
+    background-repeat: repeat; /* Define a repetição da imagem em todas as direções */
+    background-size: auto; /* Ajusta o tamanho da imagem automaticamente */
+    background-position: center; /* Centraliza a imagem no centro do corpo da página */
+}
+
+
+
+.container {
+    flex: 1; /* Ocupa todo o espaço vertical disponível */
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.jumbotron {
+    background-color: rgb(218, 38, 32);
+    color: white;
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+.btn {
+    display: inline-block;
+    padding: 10px 20px;
+    font-size: 16px;
+    text-align: center;
+    cursor: pointer;
+    text-decoration: none;
+    border: none;
+    border-radius: 5px;
+    margin-bottom: 10px;
+}
+
+.btn-danger {
+    background-color: rgb(218, 38, 32);
+    color: white;
+}
+
+.btn-warning {
+    background-color: #ffc107;
+    color: black;
+}
+
+.btn-success {
+    background-color: #28a745;
+    color: white;
+}
+
+#webcam-container {
+   
+        width: 100%;
+        max-width: 600px;
+        height: 400px; /* Definir a altura desejada para a exibição da webcam */
+        margin: 0 auto; 
+}
+
+#label-container {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+.footer {
+    background-color: rgb(218, 38, 32);
+    color: white;
+    padding: 10px 0;
+    text-align: center;
+    align-self: flex-end; /* Alinha o footer ao final do contêiner pai */
+    width: 100%;
+}
+
+.prediction-box {
+    background-color: #f0f0f0; /* Cor de fundo da caixa */
+    padding: 10px; /* Espaçamento interno da caixa */
+    border-radius: 5px; /* Borda arredondada */
+    margin-top: 10px; /* Margem superior */
+}
+
+
