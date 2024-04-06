@@ -1,10 +1,10 @@
-#Modelo de IA para Identificação de Placas de Trânsito#
+#Modelo de IA para Identificação de Placas de Trânsito
 Este é um modelo de inteligência artificial (IA) que utiliza o TensorFlow.js e a biblioteca Teachable Machine para identificar placas de trânsito por meio de uma webcam ou de imagens enviadas pelo usuário.
 
-##Como funciona##
+##Como funciona
 O modelo de IA é treinado para reconhecer diferentes tipos de placas de trânsito. Ele utiliza a câmera do dispositivo ou imagens enviadas pelo usuário para fazer previsões sobre qual placa de trânsito está sendo exibida.
 
-##Pré-requisitos##
+##Pré-requisitos
 Navegador moderno com suporte ao WebGL
 Conexão com a internet (para carregar o modelo e os scripts do TensorFlow.js)
 Uso
@@ -18,5 +18,5 @@ index.html: Página HTML## principal.
 css/style.css: Arquivo CSS para estilização.
 script.js: Script JavaScript principal que contém a lógica da aplicação.
 placas_model/: Pasta contendo o modelo de IA e os metadados fornecidos pelo Teachable Machine.
-##Créditos##
+##Créditos
 Este modelo foi criado utilizando o TensorFlow.js e a biblioteca Teachable Machine, desenvolvida pelo Google.
