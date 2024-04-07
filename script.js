@@ -47,25 +47,47 @@ async function predict() {
 
 // Função para exibir a previsão
 function displayPrediction(prediction) {
-  let maxProb = 0;
-  let maxName = "";
-  for (let i = 0; i < maxPredictions; i++) {
-      if(prediction[i].probability > maxProb) {
-          maxProb = prediction[i].probability;
-          maxName = prediction[i].className;
-      }
-  }
-  const classPrediction = maxName + ": " + (maxProb * 100).toFixed(2) + "%"; // Exibindo a probabilidade em percentual
-  
-  // Definir o texto e adicionar uma classe para estilização via CSS
-  labelContainer.innerHTML = classPrediction;
-  labelContainer.classList.add('prediction-box'); // Adiciona a classe 'prediction-box'
+    let maxProb = 0;
+    let maxName = "";
+    for (let i = 0; i < maxPredictions; i++) {
+        if(prediction[i].probability > maxProb) {
+            maxProb = prediction[i].probability;
+            maxName = prediction[i].className;
+        }
+    }
+    const classPrediction = maxName + ": " + (maxProb * 100).toFixed(2) + "%"; // Exibindo a probabilidade em percentual
+    
+    // Definir o texto e adicionar uma classe para estilização via CSS
+    labelContainer.innerHTML = classPrediction;
+    labelContainer.classList.add('prediction-box'); // Adiciona a classe 'prediction-box'
+}
+
+// Função para alternar entre as câmeras
+async function switchCamera() {
+    // Obter a lista de dispositivos de vídeo
+    const devices = await navigator.mediaDevices.enumerateDevices();
+    const videoDevices = devices.filter(device => device.kind === 'videoinput');
+
+    // Se houver mais de uma câmera, alternar para a próxima disponível
+    if (videoDevices.length > 1) {
+        const currentDeviceId = webcam.getVideoDeviceId();
+        const nextDeviceId = videoDevices.find(device => device.deviceId !== currentDeviceId).deviceId;
+        
+        // Reinicializar a webcam com o novo dispositivo
+        await webcam.stop();
+        webcam = new tmImage.Webcam(400, 400, flip, nextDeviceId); // Passa o próximo dispositivo
+        await webcam.setup();
+        await webcam.play();
+    }
 }
 
 // Adicionar manipulador de evento após o carregamento completo do DOM
 document.addEventListener('DOMContentLoaded', async function() {
     await init(); // Inicializar a webcam ao carregar a página
 });
+
+// Adicionar manipulador de evento para alternar entre as câmeras quando o botão for clicado
+document.getElementById('switch-camera-button').addEventListener('click', switchCamera);
 
 // Manipulador de eventos para quando o usuário seleciona um arquivo
 document.getElementById('file-input').addEventListener('change', async function(event) {
