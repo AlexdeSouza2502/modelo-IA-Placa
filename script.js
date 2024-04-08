@@ -22,12 +22,11 @@ async function init() {
     await webcam.play();
     isWebcamInitialized = true; // Marcar a webcam como inicializada
 
+    window.requestAnimationFrame(loop);
+
     // anexar elementos ao DOM
     document.getElementById("webcam-container").appendChild(webcam.canvas);
     labelContainer = document.getElementById("label-container");
-
-    // Chamar loop após a inicialização da webcam
-    window.requestAnimationFrame(loop);
 }
 
 // Função para atualizar o vídeo da webcam e realizar a previsão
@@ -48,50 +47,66 @@ async function predict() {
 
 // Função para exibir a previsão
 function displayPrediction(prediction) {
-    let maxProb = 0;
-    let maxName = "";
-    for (let i = 0; i < maxPredictions; i++) {
-        if(prediction[i].probability > maxProb) {
-            maxProb = prediction[i].probability;
-            maxName = prediction[i].className;
-        }
-    }
-    const classPrediction = maxName + ": " + (maxProb * 100).toFixed(2) + "%"; // Exibindo a probabilidade em percentual
-    
-    // Definir o texto e adicionar uma classe para estilização via CSS
-    labelContainer.innerHTML = classPrediction;
-    labelContainer.classList.add('prediction-box'); // Adiciona a classe 'prediction-box'
+  let maxProb = 0;
+  let maxName = "";
+  for (let i = 0; i < maxPredictions; i++) {
+      if(prediction[i].probability > maxProb) {
+          maxProb = prediction[i].probability;
+          maxName = prediction[i].className;
+      }
+  }
+  const classPrediction = maxName + ": " + (maxProb * 100).toFixed(2) + "%"; // Exibindo a probabilidade em percentual
+  
+  // Definir o texto e adicionar uma classe para estilização via CSS
+  labelContainer.innerHTML = classPrediction;
+  labelContainer.classList.add('prediction-box'); // Adiciona a classe 'prediction-box'
 }
-
-// Função para alternar entre as câmeras
-async function switchCamera() {
-    // Verificar se a webcam já foi inicializada
-    if (!isWebcamInitialized) return;
-
-    // Alternar entre câmera frontal e traseira
-    webcam = new tmImage.Webcam(400, 400, true, !webcam.isFrontFacing()); // Largura, altura, virar, usar câmera frontal ou traseira
-    await webcam.setup();
-    await webcam.play();
-}
-
-
-// Função para fechar a câmera
-async function closeCamera() {
-    // Verificar se a webcam já foi inicializada
-    if (!isWebcamInitialized) return;
-
-    // Parar a webcam
-    await webcam.stop();
-
-    // Recarregar a página para fechar a câmera
-    window.location.reload();
-}
-
-// Adicionar manipuladores de eventos para os botões de alternância e fechamento da câmera
-document.getElementById('switch-camera-button').addEventListener('click', switchCamera);
-document.getElementById('btn-close-camera').addEventListener('click', closeCamera);
 
 // Adicionar manipulador de evento após o carregamento completo do DOM
 document.addEventListener('DOMContentLoaded', async function() {
     await init(); // Inicializar a webcam ao carregar a página
+});
+
+// Manipulador de eventos para quando o usuário seleciona um arquivo
+document.getElementById('file-input').addEventListener('change', async function(event) {
+    const file = event.target.files[0]; // Obtém o arquivo selecionado
+    if (!file) return; // Se não houver arquivo selecionado, saia da função
+
+    // Fechar a webcam
+    if (webcam) {
+        webcam.stop(); // Parar a webcam
+        isWebcamInitialized = false; // Marcar a webcam como não inicializada
+        const webcamContainer = document.getElementById("webcam-container");
+        webcamContainer.removeChild(webcam.canvas); // Remover o elemento da webcam do contêiner
+    }
+
+    // Exibe a imagem selecionada
+    const imageContainer = document.getElementById('image-container');
+    imageContainer.innerHTML = ''; // Limpa qualquer imagem anteriormente exibida
+    const imgElement = document.createElement('img');
+    imgElement.width = 200; // Define a largura da imagem (você pode ajustar conforme necessário)
+    imgElement.height = 200; // Define a altura da imagem (você pode ajustar conforme necessário)
+    imageContainer.appendChild(imgElement); // Adiciona a imagem ao contêiner
+
+    // Carrega a imagem selecionada e realiza a previsão
+    const reader = new FileReader(); // Cria um novo leitor de arquivo
+    reader.onload = async function(event) {
+        imgElement.src = event.target.result; // Atribui o resultado da leitura como src da imagem
+
+        // Quando a imagem é carregada, realize a previsão
+        imgElement.onload = async function() {
+            if (model) {
+                const canvas = document.createElement('canvas');
+                const ctx = canvas.getContext('2d');
+                canvas.width = 200;
+                canvas.height = 200;
+                ctx.drawImage(imgElement, 0, 0, canvas.width, canvas.height);
+
+                // Realiza a previsão com a imagem carregada
+                const prediction = await model.predict(canvas);
+                displayPrediction(prediction);
+            }
+        };
+    };
+    reader.readAsDataURL(file); // Lê o conteúdo do arquivo como um Data URL
 });
