@@ -22,11 +22,12 @@ async function init() {
     await webcam.play();
     isWebcamInitialized = true; // Marcar a webcam como inicializada
 
-    window.requestAnimationFrame(loop);
-
     // anexar elementos ao DOM
     document.getElementById("webcam-container").appendChild(webcam.canvas);
     labelContainer = document.getElementById("label-container");
+
+    // Chamar loop após a inicialização da webcam
+    window.requestAnimationFrame(loop);
 }
 
 // Função para atualizar o vídeo da webcam e realizar a previsão
@@ -61,6 +62,34 @@ function displayPrediction(prediction) {
     labelContainer.innerHTML = classPrediction;
     labelContainer.classList.add('prediction-box'); // Adiciona a classe 'prediction-box'
 }
+
+// Função para alternar entre as câmeras
+async function switchCamera() {
+    // Verificar se a webcam já foi inicializada
+    if (!isWebcamInitialized) return;
+
+    // Alternar entre câmera frontal e traseira
+    webcam = new tmImage.Webcam(400, 400, true, !webcam.isFrontFacing()); // Largura, altura, virar, usar câmera frontal ou traseira
+    await webcam.setup();
+    await webcam.play();
+}
+
+
+// Função para fechar a câmera
+async function closeCamera() {
+    // Verificar se a webcam já foi inicializada
+    if (!isWebcamInitialized) return;
+
+    // Parar a webcam
+    await webcam.stop();
+
+    // Recarregar a página para fechar a câmera
+    window.location.reload();
+}
+
+// Adicionar manipuladores de eventos para os botões de alternância e fechamento da câmera
+document.getElementById('switch-camera-button').addEventListener('click', switchCamera);
+document.getElementById('btn-close-camera').addEventListener('click', closeCamera);
 
 // Adicionar manipulador de evento após o carregamento completo do DOM
 document.addEventListener('DOMContentLoaded', async function() {
