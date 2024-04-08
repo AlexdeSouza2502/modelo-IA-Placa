@@ -62,56 +62,7 @@ function displayPrediction(prediction) {
     labelContainer.classList.add('prediction-box'); // Adiciona a classe 'prediction-box'
 }
 
-// Função para alternar entre as câmeras
-async function switchCamera() {
-    // Obter a lista de dispositivos de vídeo
-    const devices = await navigator.mediaDevices.enumerateDevices();
-    const videoDevices = devices.filter(device => device.kind === 'videoinput');
-
-    // Se houver mais de uma câmera, alternar para a próxima disponível
-    if (videoDevices.length > 1) {
-        const currentDeviceId = webcam.getVideoDeviceId();
-        const nextDeviceId = videoDevices.find(device => device.deviceId !== currentDeviceId).deviceId;
-        
-        // Reinicializar a webcam com o novo dispositivo
-        await webcam.stop();
-        webcam = new tmImage.Webcam(400, 400, flip, nextDeviceId); // Passa o próximo dispositivo
-        await webcam.setup();
-        await webcam.play();
-    }
-}
-
 // Adicionar manipulador de evento após o carregamento completo do DOM
 document.addEventListener('DOMContentLoaded', async function() {
     await init(); // Inicializar a webcam ao carregar a página
-});
-
-// Adicionar manipulador de evento para alternar entre as câmeras quando o botão for clicado
-document.getElementById('switch-camera-button').addEventListener('click', switchCamera);
-
-// Manipulador de eventos para quando o usuário seleciona um arquivo
-document.getElementById('file-input').addEventListener('change', async function(event) {
-    const file = event.target.files[0]; // Obtém o arquivo selecionado
-    if (!file) return; // Se não houver arquivo selecionado, saia da função
-
-    // Carrega a imagem selecionada e a exibe
-    const reader = new FileReader(); // Cria um novo leitor de arquivo
-    reader.onload = async function(event) {
-        const image = new Image();
-        image.onload = async function() {
-            if (model) {
-                const canvas = document.createElement('canvas');
-                const ctx = canvas.getContext('2d');
-                canvas.width = 200;
-                canvas.height = 200;
-                ctx.drawImage(image, 0, 0, canvas.width, canvas.height);
-
-                // Realiza a previsão com a imagem carregada
-                const prediction = await model.predict(canvas);
-                displayPrediction(prediction);
-            }
-        };
-        image.src = event.target.result; // Atribui o resultado da leitura como src da imagem
-    };
-    reader.readAsDataURL(file); // Lê o conteúdo do arquivo como um Data URL
 });
