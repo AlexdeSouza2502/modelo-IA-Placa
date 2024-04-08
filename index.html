@@ -14,8 +14,7 @@
         </div>
 
         <button type="button" class="btn btn-danger" onclick="init()">Iniciar</button>
-        <button type="button" class="btn btn-warning" id="btn-change-camera">Alternar Câmera</button>
-        <button type="button" class="btn btn-danger" id="btn-close-camera">Fechar Câmera</button>
+        <button type="button" class="btn btn-warning" id="switch-camera-button">Alternar Câmera</button>
         <input type="file" id="file-input" accept="image/*" style="display: none;">
         <button type="button" class="btn btn-success" onclick="document.getElementById('file-input').click()">Enviar Foto</button> <!-- Botão para abrir o seletor de arquivo -->
         <div id="webcam-container"></div>
@@ -25,6 +24,8 @@
             Todos os direitos reservados
         </div>
     </div>
+
+    <button type="button" class="btn btn-danger" id="btn-close-camera" style="display: none;">Fechar Câmera</button>
 
     <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@latest/dist/tf.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@teachablemachine/image@latest/dist/teachablemachine-image.min.js"></script>
