@@ -5,6 +5,9 @@ Este é um modelo de inteligência artificial (IA) que utiliza o TensorFlow.js e
 ## Como funciona
 
 O modelo de IA é treinado para reconhecer diferentes tipos de placas de trânsito. Ele utiliza a câmera do dispositivo ou imagens enviadas pelo usuário para fazer previsões sobre qual placa de trânsito está sendo exibida.
+![image](https://github.com/AlexdeSouza2502/modelo-IA-Placa/assets/62069087/6c568b39-e3aa-4775-83b3-643ef5555360)
+![image](https://github.com/AlexdeSouza2502/modelo-IA-Placa/assets/62069087/9dab0e26-4d63-4eca-bece-d731b84540f0)
+
 
 ## Pré-requisitos
 
